@@ -1,0 +1,151 @@
+.editor_top_selector .selector div div {float: left;}
+.editor_top_selector .weapon_sets .selector div {float: left;}
+.editor_top_selector .selector div .rowico 			{float: left; width: 34px; height: 34px; margin: 10px 2px 2px 0px;}
+.editor_top_selector .weapon_sets .selector div div .rowico  	{float: left; width: 34px; height: 34px; margin: 5px 2px 2px 0px; padding: 0; display: none;}
+.editor_top_selector .selector div .rowico:hover,
+.editor_top_selector .weapon_sets .selector div div .rowico:hover {cursor: pointer;}
+
+/* Professions */
+.prof div {background: url("../assets/professions_elite_new.png") no-repeat 0px 0px;}
+.prof .p_elementalist   {background-position: 0px 0px;}
+.prof .p_warrior 	{background-position: -36px 0px;}
+.prof .p_ranger 	{background-position: -72px 0px;}
+.prof .p_necromancer 	{background-position: -108px 0px;}
+.prof .p_guardian 	{background-position: -144px -1px;}
+.prof .p_thief 	        {background-position: -180px 0px;}
+.prof .p_engineer 	{background-position: -216px 0px;}
+.prof .p_mesmer 	{background-position: -252px 0px;}
+.prof .p_revenant 	{background-position: -288px 0px;}
+
+.prof .p_elementalist:hover {background-position: 0px -34px;}
+.prof .p_warrior:hover 	    {background-position: -36px -34px;}
+.prof .p_ranger:hover 	    {background-position: -72px -34px;}
+.prof .p_necromancer:hover  {background-position: -108px -34px;}
+.prof .p_guardian:hover     {background-position: -144px -34px;}
+.prof .p_thief:hover 	    {background-position: -180px -34px;}
+.prof .p_engineer:hover     {background-position: -216px -34px;}
+.prof .p_mesmer:hover 	    {background-position: -252px -34px;}
+.prof .p_revenant:hover	    {background-position: -288px -34px;}
+
+.prof .p_elementalist_on    {background-position: 0px -68px;}
+.prof .p_warrior_on         {background-position: -36px -68px;}
+.prof .p_ranger_on          {background-position: -72px -68px;}
+.prof .p_necromancer_on     {background-position: -108px -68px;}
+.prof .p_guardian_on        {background-position: -144px -68px;}
+.prof .p_thief_on           {background-position: -180px -68px;}
+.prof .p_engineer_on        {background-position: -216px -68px;}
+.prof .p_mesmer_on          {background-position: -252px -68px;}
+.prof .p_revenant_on        {background-position: -288px -68px;}
+
+.prof .p_elementalist_elite  {background-position: 0px -102px;}
+.prof .p_warrior_elite       {background-position: -36px -102px;}
+.prof .p_ranger_elite        {background-position: -72px -102px;}
+.prof .p_necromancer_elite   {background-position: -108px -102px;}
+.prof .p_guardian_elite      {background-position: -144px -102px;}
+.prof .p_thief_elite         {background-position: -180px -102px;}
+.prof .p_engineer_elite      {background-position: -216px -102px;}
+.prof .p_mesmer_elite        {background-position: -252px -102px;}
+.prof .p_revenant_elite      {background-position: -288px -102px;}
+
+/* Races */
+.race div {background: url("../assets/races.png") no-repeat 0px 0px;}
+.race .r_human 	    {background-position: 0px 0px;}
+.race .r_charr 	    {background-position: -36px 0px;}
+.race .r_norn 	    {background-position: -72px 0px;}
+.race .r_asura 	    {background-position: -108px 0px;}
+.race .r_sylvari    {background-position: -144px -1px;}
+
+.race .r_human:hover 	{background-position: 0px -34px;}
+.race .r_charr:hover	{background-position: -36px -34px;}
+.race .r_norn:hover 	{background-position: -72px -34px;}
+.race .r_asura:hover 	{background-position: -108px -34px;}
+.race .r_sylvari:hover  {background-position: -144px -35px;}
+
+.race .r_human_on 	{background-position: 0px -68px;}
+.race .r_charr_on 	{background-position: -36px -68px;}
+.race .r_norn_on 	{background-position: -72px -68px;}
+.race .r_asura_on 	{background-position: -108px -68px;}
+.race .r_sylvari_on     {background-position: -144px -69px;}
+
+/* Weapons */
+.weap_row .rowico {background: url("../assets/weapons_a.png") no-repeat 0px 0px;}
+
+.weap_row .w_longbow 	{background-position: 0px 0px;}
+.weap_row .w_greatsword {background-position: -36px 0px;}
+.weap_row .w_hammer 	{background-position: -72px 0px;}
+.weap_row .w_shortbow 	{background-position: -108px 0px;}
+.weap_row .w_staff 	{background-position: -144px 0px;}
+.weap_row .w_rifle 	{background-position: -180px 0px;}
+.weap_row .w_dagger 	{background-position: -216px 0px;}
+.weap_row .w_harpoongun {background-position: -252px 0px;}
+.weap_row .w_spear 	{background-position: -288px 0px;}
+.weap_row .w_trident 	{background-position: -324px 0px;}
+.weap_row .w_sword 	{background-position: -360px 0px;}
+.weap_row .w_scepter 	{background-position: -396px 0px;}
+.weap_row .w_mace 	{background-position: -432px 0px;}
+.weap_row .w_axe 	{background-position: -468px 0px;}
+.weap_row .w_pistol 	{background-position: -504px 0px;}
+.weap_row .w_torch 	{background-position: -540px 0px;}
+.weap_row .w_shield 	{background-position: -576px 0px;}
+.weap_row .w_focus 	{background-position: -612px 0px;}
+.weap_row .w_warhorn 	{background-position: -648px 0px;}
+
+.weap_row .w_longbow:hover	{background-position: 0px -34px;}
+.weap_row .w_greatsword:hover 	{background-position: -36px -34px;}
+.weap_row .w_hammer:hover 	{background-position: -72px -34px;}
+.weap_row .w_shortbow:hover 	{background-position: -108px -34px;}
+.weap_row .w_staff:hover	{background-position: -144px -34px;}
+.weap_row .w_rifle:hover 	{background-position: -180px -34px;}
+.weap_row .w_dagger:hover 	{background-position: -216px -34px;}
+.weap_row .w_harpoongun:hover 	{background-position: -252px -34px;}
+.weap_row .w_spear:hover 	{background-position: -288px -34px;}
+.weap_row .w_trident:hover 	{background-position: -324px -34px;}
+.weap_row .w_sword:hover 	{background-position: -360px -34px;}
+.weap_row .w_scepter:hover 	{background-position: -396px -34px;}
+.weap_row .w_mace:hover 	{background-position: -432px -34px;}
+.weap_row .w_axe:hover 		{background-position: -468px -34px;}
+.weap_row .w_pistol:hover 	{background-position: -504px -34px;}
+.weap_row .w_torch:hover 	{background-position: -540px -34px;}
+.weap_row .w_shield:hover	{background-position: -576px -34px;}
+.weap_row .w_focus:hover 	{background-position: -612px -34px;}
+.weap_row .w_warhorn:hover	{background-position: -648px -34px;}
+
+.weap_row .w_longbow_on 	{background-position: 0px -68px;}
+.weap_row .w_greatsword_on 	{background-position: -36px -68px;}
+.weap_row .w_hammer_on 		{background-position: -72px -68px;}
+.weap_row .w_shortbow_on 	{background-position: -108px -68px;}
+.weap_row .w_staff_on 		{background-position: -144px -68px;}
+.weap_row .w_rifle_on 		{background-position: -180px -68px;}
+.weap_row .w_dagger_on 		{background-position: -216px -68px;}
+.weap_row .w_harpoongun_on 	{background-position: -252px -68px;}
+.weap_row .w_spear_on 		{background-position: -288px -68px;}
+.weap_row .w_trident_on 	{background-position: -324px -68px;}
+.weap_row .w_sword_on 		{background-position: -360px -68px;}
+.weap_row .w_scepter_on 	{background-position: -396px -68px;}
+.weap_row .w_mace_on 		{background-position: -432px -68px;}
+.weap_row .w_axe_on 		{background-position: -468px -68px;}
+.weap_row .w_pistol_on 		{background-position: -504px -68px;}
+.weap_row .w_torch_on 		{background-position: -540px -68px;}
+.weap_row .w_shield_on 		{background-position: -576px -68px;}
+.weap_row .w_focus_on 		{background-position: -612px -68px;}
+.weap_row .w_warhorn_on 	{background-position: -648px -68px;}
+
+.weap_row .w_longbow_on_asc 	{background-position: 0px -102px;}
+.weap_row .w_greatsword_on_asc 	{background-position: -36px -102px;}
+.weap_row .w_hammer_on_asc 	{background-position: -72px -102px;}
+.weap_row .w_shortbow_on_asc 	{background-position: -108px -102px;}
+.weap_row .w_staff_on_asc 	{background-position: -144px -102px;}
+.weap_row .w_rifle_on_asc 	{background-position: -180px -102px;}
+.weap_row .w_dagger_on_asc 	{background-position: -216px -102px;}
+.weap_row .w_harpoongun_on_asc 	{background-position: -252px -102px;}
+.weap_row .w_spear_on_asc 	{background-position: -288px -102px;}
+.weap_row .w_trident_on_asc 	{background-position: -324px -102px;}
+.weap_row .w_sword_on_asc 	{background-position: -360px -102px;}
+.weap_row .w_scepter_on_asc	{background-position: -396px -102px;}
+.weap_row .w_mace_on_asc 	{background-position: -432px -102px;}
+.weap_row .w_axe_on_asc 	{background-position: -468px -102px;}
+.weap_row .w_pistol_on_asc	{background-position: -504px -102px;}
+.weap_row .w_torch_on_asc 	{background-position: -540px -102px;}
+.weap_row .w_shield_on_asc	{background-position: -576px -102px;}
+.weap_row .w_focus_on_asc 	{background-position: -612px -102px;}
+.weap_row .w_warhorn_on_asc 	{background-position: -648px -102px;}

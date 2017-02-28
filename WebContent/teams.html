@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="First page" />
+<meta name="author" content="Toby Zines" />
+<title>Held Inventory</title>
+
+<!-- Bootstrap core CSS -->
+<link href="./css/bootstrap.min.css" rel="stylesheet" />
+<link href="./css/bootstrap-theme.min.css" rel="stylesheet" />
+<link href="./css/pnotify.custom.min.css" rel="stylesheet" />
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+  crossorigin="anonymous" />
+
+<!-- Custom styles for this template -->
+<link href="./css/starter-template.css" rel="stylesheet" />
+<link href="./css/icons.css" rel="stylesheet" />
+
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+            class="icon-bar"></span> <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Team Planning Tool</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="starter-template">
+      <h1>Team Generator</h1>
+      <p title="Team Setup!">Load your team details here</p>
+      <div>
+        <input type="file" id="roles input"></input>
+        <button id="loadRosterButton" onclick="loadRoster()">Load roster</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container editor_top_selector">
+    <div class="well">
+      <div class="container-fluid mainwindow">
+        <h2>Roster</h2>
+        <div class="row selector">
+          <div class="weap_row">
+            <div class="rowico w_longbow">lb</div>
+            <div class="col-md-12 rcol" id="rolesDiv" style="height: 350px; overflow-y: auto;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="container editor_top_selector">
+    <div class="well">
+      <div class="container-fluid mainwindow selector">
+        <h2>Experience</h2>
+        <div class="row">
+          <div class="col-md-12 rcol" id="experienceDiv" style="height: 300px; overflow-y: auto;"></div>
+        </div>
+        <h2>Wing 1</h2>
+        <div class="row">
+          <div class="col-md-12 rcol" id="wing1Div" style="height: 200px; overflow-y: auto;"></div>
+        </div>
+        <h2>Wing 2</h2>
+        <div class="row">
+          <div class="col-md-12 rcol" id="wing2Div" style="height: 200px; overflow-y: auto;"></div>
+        </div>
+        <h2>Wing 3</h2>
+        <div class="row">
+          <div class="col-md-12 rcol" id="wing3Div" style="height: 200px; overflow-y: auto;"></div>
+        </div>
+        <h2>Wing 4</h2>
+        <div class="row">
+          <div class="col-md-12 rcol" id="wing4Div" style="height: 200px; overflow-y: auto;"></div>
+        </div>
+        <h2>Builds</h2>
+        <div class="row prof">
+          <div class="rowico p_elementalist"></div>
+          <div class="col-md-12 rcol" id="buildsDiv" style="height: 400px; overflow-y: auto;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="./js/jquery.tablesorter.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  <script src="./js/moment.js"></script>
+  <script src="./js/ZeroClipboard.min.js"></script>
+  <script src="./js/pnotify.custom.min.js"></script>
+  <script src="./js/all.js"></script>
+
+  <script type="text/javascript">
+      var SIGNED = false;
+      var LANGUAGE = 'en';
+      var ITEM_LANGUAGE = 'en';
+      moment.lang(LANGUAGE == 'zh' ? 'zh-cn' : LANGUAGE);
+
+      var pl = [ "Condition PS Berzeker", "Power PS Berzerker", "Scepter DH Radiance", "Scepter DH Honour",
+          "Hammer DH", "Power Herald", "Power Daredevil Staff", "Condition Ranger", "Condition Druid", "Healer Druid",
+          "Berzerker Druid", "Condition Engineer", "Power Engineer", "Traditional Staff Tempest", "FA Staff Tempest",
+          "D/W Tempest", "Magi Healer", "ChronoTank", "ChronoSupport", "Condition Mesmer", "Condition Necromancer" ];
+      var peopleList = [ "Atri", "Divine", "Flynn", "Gin", "Jay", "Kai", "Rava", "Snuffles", "Tiger", "Toby" ];
+      var expClass = {};
+      expClass["Atri"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 0, 2 ];
+      expClass["Divine"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 0, 2 ];
+      expClass["Flynn"] = [ 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+      expClass["Gin"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 0, 2 ];
+      expClass["Jay"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 0, 2 ];
+      expClass["Kai"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 0, 2 ];
+      expClass["Rava"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 0, 2 ];
+      expClass["Snuffles"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 0, 2 ];
+      expClass["Tiger"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ];
+      expClass["Toby"] = [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 0, 2 ];
+
+      var wList = [];
+      wList[0] = {};
+      wList[0]["names"] = [ "Vale Guardian", "Gorseval", "Sabetha" ];
+      wList[0]["Vale Guardian"] = [ pl[17], pl[18], pl[9], pl[8], pl[0], pl[1], pl[3], pl[11], pl[6], pl[6] ];
+      wList[0]["Gorseval"] = [ pl[17], pl[18], pl[10], pl[8], pl[0], pl[1], pl[7], pl[7], pl[11], pl[11] ];
+      wList[0]["Sabetha"] = [ pl[18], pl[18], pl[10], pl[8], pl[0], pl[0], pl[15], pl[15], pl[15], pl[7] ];
+
+      wList[1] = {};
+      wList[1]["names"] = [ "Slothasor", "Bandit Trio", "Matthias" ];
+      wList[1]["Slothasor"] = [ pl[18], pl[18], pl[10], pl[8], pl[0], pl[0], pl[20], pl[20], pl[13], pl[13] ];
+      wList[1]["Bandit Trio"] = [ pl[18], pl[18], pl[10], pl[8], pl[0], pl[0], pl[20], pl[20], pl[13], pl[5] ];
+      wList[1]["Matthias"] = [ pl[18], pl[18], pl[9], pl[9], pl[0], pl[0], pl[20], pl[20], pl[3], pl[3] ];
+
+      wList[2] = {};
+      wList[2]["names"] = [ "Seigeing the Castle", "Keep Construct", "Xera" ];
+      wList[2]["Seigeing the Castle"] = [ pl[18], pl[18], pl[10], pl[10], pl[1], pl[1], pl[7], pl[13], pl[13], pl[2] ];
+      wList[2]["Keep Construct"] = [ pl[17], pl[18], pl[9], pl[9], pl[1], pl[1], pl[13], pl[13], pl[13], pl[6] ];
+      wList[2]["Xera"] = [ pl[17], pl[18], pl[9], pl[9], pl[0], pl[0], pl[14], pl[14], pl[15], pl[15] ];
+
+      wList[3] = {};
+      wList[3]["names"] = [ "Cairn", "Overseer", "Samarog", "Deimos" ];
+      wList[3]["Cairn"] = [ pl[18], pl[16], pl[9], pl[9], pl[0], pl[0], pl[7], pl[7], pl[11], pl[11] ];
+      wList[3]["Overseer"] = [ pl[17], pl[18], pl[9], pl[9], pl[0], pl[0], pl[20], pl[20], pl[11], pl[11] ];
+      wList[3]["Samarog"] = [ pl[18], pl[18], pl[9], pl[9], pl[1], pl[1], pl[7], pl[7], pl[15], pl[15] ];
+      wList[3]["Deimos"] = [ pl[17], pl[18], pl[9], pl[9], pl[0], pl[0], pl[11], pl[7], pl[7], pl[16] ];
+
+      function tabHeader(dataCol, headerText) {
+        return '<th class="align-right" data-column="' + dataCol +'" tabindex="0" scope="col" role="columnheader" unselectable="on" style="-webkit-user-select: none;">'
+            + '<div>' + headerText + '</div></th>';
+      }
+
+      function presentPercent(percent) {
+        var badge_type = "badge-success";
+        var arrow_type = "fa-arrow-up";
+
+        if (percent < 0) {
+          badge_type = "badge-important";
+          arrow_type = "fa-arrow-down";
+        }
+        var txt = '<span class="badge ' + badge_type + '">';
+        txt += (percent * 100).toPrecision(4) + "%";
+        txt += '<i class="fa fa-fw ' + arrow_type + '"></i></span>';
+        return txt;
+      }
+
+      function runRoles(profList, wingData, classExperience, ppl) {
+        //x is wing
+        //y is boss
+        //z is profession / role
+
+        var roster = {};
+        roster["bosses"] = [];
+        roster["players"] = ppl;
+        var tsText = "";
+        for (var x = 0; x < wingData.length; x++) {
+          for (var y = 0; y < wingData[x]["names"].length; y++) {
+            var bossName = wingData[x]["names"][y];
+            var requiredProfs = wingData[x][bossName];
+            var orderedRequiredProfs = getProfListPriority(requiredProfs, classExperience, ppl, profList);
+            //console.log("Ordered List is " + orderedRequiredProfs);
+            tsText += "\t\t\t****" + bossName + "****\r\n";
+            console.log("\t\t\t****", bossName, "****");
+            roster["bosses"].push(bossName);
+            var avail = ppl.slice();
+            for (var z = 0; z < orderedRequiredProfs.length; z++) {
+              //console.log("z is " + z + ", required Prof is " + orderedRequiredProfs[z]);
+              var zindex = profList.indexOf(orderedRequiredProfs[z]);
+              var perIndex = Math.floor((Math.random() * avail.length));
+              var per = avail[perIndex];
+              //console.log("per = " + per + ", zindex = " + zindex);
+              while (classExperience[per][zindex] <= 1) {
+                var perIndex = Math.floor((Math.random() * avail.length));
+                var per = avail[perIndex];
+              }
+              if (classExperience[per][zindex] == 2) {
+                avail.splice(perIndex, 1);
+              }
+              tsText += "\t" + orderedRequiredProfs[z] + "\t\t\t\t\t" + per + "\r\n";
+              console.log("\t", orderedRequiredProfs[z], "\t\t\t\t\t", per);
+              if (roster[per] instanceof Array) {
+                roster[per].push(orderedRequiredProfs[z]);
+              } else {
+                roster[per] = [ orderedRequiredProfs[z] ];
+              }
+            }
+          }
+        }
+        window.prompt("For TeamSpeak", tsText);
+        return roster;
+      }
+
+      // profSubset = list of professions for a boss
+      // experience = expCLass
+      // people = ppl
+      // professionList = pl
+      function getProfListPriority(profSubset, experience, people, professionList) {
+        var profCounts = [];
+        var i = 0;
+        for (i = 0; i < professionList.length; i++) {
+          profCounts[i] = 0;
+        }
+
+        for (var i = 0; i < people.length; i++) {
+          var personName = people[i];
+          for (var j = 0; j < experience[personName].length; j++) {
+            if (experience[personName][j] == 2) {
+              profCounts[j] += 2;
+            }
+          }
+        }
+
+        var orderedProfList = [];
+        var orderedProfPriority = [];
+
+        for (i = 0; i < profSubset.length; i++) {
+          var plIndex = professionList.indexOf(profSubset[i]);
+          var currentPriority = profCounts[plIndex];
+          var insertLocation = 0;
+          for (insertLocation = 0; insertLocation < orderedProfList.length; insertLocation++) {
+            if (orderedProfPriority[insertLocation] > currentPriority) {
+              break;
+            }
+          }
+          orderedProfList.splice(insertLocation, 0, profSubset[i]);
+          orderedProfPriority.splice(insertLocation, 0, currentPriority);
+        }
+        return orderedProfList;
+      }
+
+      // tableId - the id of the table (to create)
+      // tableStructure - an object with 
+      //   1. a field called <code>headersId</code> which has the list of headers
+      //   2. a field called <code>rowNamesId</code> which has the list of values for the left most column
+      //   3. a set of arrays indexed by the names in the <code>rowNamesId</code> list representing the rest
+      //      of each row (after the first column)
+      // tableHolder - the div object in which to place the table
+      // headersId - see <code>tableStructure</code>
+      // rowNamesId - see <code>tableStructure</code>
+      // tabClassFunction - a function taking a single cell value and generating any text that sits in the td prior to the cell
+      function showTable(tableId, tableStructure, tableHolder, headersId, rowNamesId, tabClassFunction) {
+        var txt = '<table id="' + tableId + '" class="table table-condensed align-right fixed-font" role="grid">';
+        txt += '<thead><tr role="row">';
+        // image
+        txt += '<th data-column="0" tabindex="0" scope="col" role="columnheader" unselectable="on" style="-webkit-user-select: none;">';
+        txt += '<div><span class="table-tools" filename="' + tableId + '">csv</span><div></th>';
+
+        var headers = tableStructure[headersId];
+        var x = 0;
+        for (x = 0; x < headers.length; x++) {
+          txt += tabHeader("" + x, headers[x]);
+        }
+        txt += '</tr></thead>';
+        txt += '<tbody>';
+
+        var rowNames = tableStructure[rowNamesId];
+
+        for (x = 0; x < rowNames.length; x++) {
+          var rowData = tableStructure[rowNames[x]];
+          txt += "<tr><td>" + rowNames[x] + "</td>";
+          for (var y = 0; y < rowData.length; y++) {
+            txt += "<td " + tabClassFunction(rowData[y]) + ">" + rowData[y]
+                + "<div class='rowico p_warrior_on'></div></td>";
+          }
+          txt += "</tr>";
+        }
+        txt += "</tbody></table>";
+        tableHolder.innerHTML = txt;
+      }
+
+      function loadTableFromCsv() {
+        console.log(document.getElementById("roles input").files); // list of File objects
+
+        var file = document.getElementById("roles input").files[0];
+        var reader = new FileReader();
+        content = reader.readAsText(file);
+        console.log(content);
+      }
+
+      function loadRoster() {
+        var rolesDiv = document.getElementById("rolesDiv");
+        //initiateTable(rolesDiv);
+        //loadSorter();
+        var roster = runRoles(pl, wList, expClass, peopleList);
+        showTable("rosterTable", roster, rolesDiv, "bosses", "players", function(data) {
+          return ""
+        });
+
+        var experienceTable = expClass;
+        experienceTable["columns"] = pl;
+        experienceTable["rows"] = peopleList;
+        var expDiv = document.getElementById("experienceDiv");
+        showTable("expTable", experienceTable, expDiv, "columns", "rows", function(data) {
+          if (data == 0)
+            return 'class ="danger"';
+          else if (data == 1)
+            return 'class = "warning"';
+          else if (data == 2)
+            return 'class = "success"';
+        });
+
+        var wing1Table = wList[0];
+        wing1Table["numbers"] = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+        var wing1Div = document.getElementById("wing1Div");
+        showTable("w1Table", wing1Table, wing1Div, "numbers", "names", function(data) {
+          return ""
+        });
+
+        var wing2Table = wList[1];
+        wing2Table["numbers"] = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+        var wing2Div = document.getElementById("wing2Div");
+        showTable("w2Table", wing2Table, wing2Div, "numbers", "names", function(data) {
+          return ""
+        });
+
+        var wing3Table = wList[2];
+        wing3Table["numbers"] = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+        var wing3Div = document.getElementById("wing3Div");
+        showTable("w3Table", wing3Table, wing3Div, "numbers", "names", function(data) {
+          return ""
+        });
+
+        var wing4Table = wList[3];
+        wing4Table["numbers"] = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+        var wing4Div = document.getElementById("wing4Div");
+        showTable("w4Table", wing4Table, wing4Div, "numbers", "names", function(data) {
+          return ""
+        });
+
+        var builds = {};
+        builds["Condition PS Berzeker"] = [ "Heavy", "Warrior", "http://TBD" ];
+        builds["Power PS Berzerker"] = [ "Heavy", "Warrior", "http://TBD" ];
+        builds["Scepter DH Radiance"] = [ "Heavy", "Guardian", "http://TBD" ];
+        builds["Scepter DH Honour"] = [ "Heavy", "Guardian", "http://TBD" ];
+        builds["Hammer DH"] = [ "Heavy", "Guardian", "http://TBD" ];
+        builds["Power Herald"] = [ "Heavy", "Revenant", "http://TBD" ];
+        builds["Power Daredevil Staff"] = [ "Medium", "Thief", "http://TBD" ];
+        builds["Condition Ranger"] = [ "Medium", "Ranger", "http://TBD" ];
+        builds["Condition Druid"] = [ "Medium", "Ranger", "http://TBD" ];
+        builds["Healer Druid"] = [ "Medium", "Ranger", "http://TBD" ];
+        builds["Berzerker Druid"] = [ "Medium", "Ranger", "http://TBD" ];
+        builds["Condition Engineer"] = [ "Medium", "Engineer", "http://TBD" ];
+        builds["Power Engineer"] = [ "Medium", "Engineer", "http://TBD" ];
+        builds["Traditional Staff Tempest"] = [ "Light", "Elementalist", "http://TBD" ];
+        builds["FA Staff Tempest"] = [ "Light", "Elementalist", "http://TBD" ];
+        builds["D/W Tempest"] = [ "Light", "Elementalist", "http://TBD" ];
+        builds["Magi Healer"] = [ "Light", "Elementalist", "http://TBD" ];
+        builds["ChronoTank"] = [ "Light", "Mesmer", "http://TBD" ];
+        builds["ChronoSupport"] = [ "Light", "Mesmer", "http://TBD" ];
+        builds["Condition Mesmer"] = [ "Light", "Mesmer", "http://TBD" ];
+        builds["Condition Necromancer"] = [ "Light", "Necromancer", "http://TBD" ];
+        builds["rows"] = pl;
+        builds["columns"] = [ "Weight", "Class", "Build" ];
+        var buildsDiv = document.getElementById("buildsDiv");
+
+        showTable("builds", builds, buildsDiv, "columns", "rows", function(data) {
+          return ""
+        });
+
+        updateItemTools(jQuery);
+      }
+
+      function bossDifficulty(bossName) {
+        var hardArray = [ "Sabetha", "Xera", "Deimos" ];
+        var medArray = [ "Vale Guardian", "Cairn", "Matthias" ];
+
+        if (hardArray.contains(bossName)) {
+          return 'class = "danger"';
+        } else if (medArray.contains(bossName)) {
+          return 'class = "warning"';
+        } else
+          return 'class = "success"';
+      }
+    </script>
+
+  <noscript>Sorry, your browser does not support JavaScript!</noscript>
+</body>
+</html>

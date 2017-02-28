@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="First page" />
+<meta name="author" content="Toby Zines" />
+<title>Held Inventory</title>
+
+<!-- Bootstrap core CSS -->
+<link href="./css/bootstrap.min.css" rel="stylesheet" />
+<link href="./css/bootstrap-theme.min.css" rel="stylesheet" />
+<link href="./css/pnotify.custom.min.css" rel="stylesheet" />
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+  crossorigin="anonymous" />
+
+<!-- Custom styles for this template -->
+<link href="./css/starter-template.css" rel="stylesheet" />
+
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+            class="icon-bar"></span> <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Trading Post</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="starter-template">
+      <h1>Inventory Comparator</h1>
+      <p title="Check your trade performance">Load your inventory here</p>
+      <div>
+        <input type="file" id="trade input"></input>
+        <button id="loadCsvButton" onclick="loadTableFromCsv()">Load file</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="well">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12" id="tradeTableDiv" style="height: 215px; overflow-y: auto;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="./js/jquery.tablesorter.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  <script src="./js/moment.js"></script>
+  <script src="./js/ZeroClipboard.min.js"></script>
+  <script src="./js/pnotify.custom.min.js"></script>
+  <script src="./js/all.js"></script>
+
+  <script type="text/javascript">
+      var SIGNED = false;
+      var LANGUAGE = 'en';
+      var ITEM_LANGUAGE = 'en';
+      moment.lang(LANGUAGE == 'zh' ? 'zh-cn' : LANGUAGE);
+
+      function sortableTabHeader(dataCol, headerText) {
+        return '<th class="align-right tablesorter-header tablesorter-headerUnSorted" data-column="' + dataCol +'" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="custom-list" unselectable="on" aria-sort="none" aria-label=": No sort applied, activate to apply an ascending sort" style="-webkit-user-select: none;">'
+            + '<div class="tablesorter-header-inner">'
+            + headerText
+            + '<i class="fa fa-sort"/></div></th>';
+      }
+
+      function presentPercent(percent) {
+        var badge_type = "badge-success";
+        var arrow_type = "fa-arrow-up";
+
+        if (percent < 0) {
+          badge_type = "badge-important";
+          arrow_type = "fa-arrow-down";
+        }
+        var txt = '<span class="badge ' + badge_type + '">';
+        txt += (percent * 100).toPrecision(4) + "%";
+        txt += '<i class="fa fa-fw ' + arrow_type + '"></i></span>';
+        return txt;
+      }
+      function initiateTable(tableHolder) {
+
+        var convertedList = [ [ "107", "bob", "32007" ],
+            [ "108", "evergreen", "10012" ],
+            [ "109", "another", "21012" ]];
+
+        var commaSeparatedList = "";
+
+        for (var x = 0; x < convertedList.length; x++) {
+          commaSeparatedList += convertedList[x][0];
+          if (x != convertedList.length - 1) {
+            commaSeparatedList += ",";
+          }
+        }
+
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            myArray = JSON.parse(this.responseText);
+            var sellProfit = 0;
+            var buyProfit = 0;
+            var sellPercentage = 0;
+            var buyPercentage = 0;
+            txt = '<table id="tradeTable" class="table table-condensed align-right fixed-font tablesorter tablesorter-default" role="grid">';
+            txt += '<thead><tr class="tablesorter-headerRow" role="row">';
+            // image
+            txt += '<th data-sorter="false" data-column="0" class="tablesorter-header sorter-false tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" style="-webkit-user-select: none;">';
+            txt += '<div class="tablesorter-header-inner"><span class="table-tools">csv</span><div></th>';
+            // id
+            txt += sortableTabHeader("1", "Item Id");
+            // name
+            txt += sortableTabHeader("2", "Item Name");
+            // purchase price
+            txt += sortableTabHeader("3", "Purchase Price");
+            // buy
+            txt += sortableTabHeader("4", "Buy");
+            // demand
+            txt += sortableTabHeader("5", "Demand");
+            // sell
+            txt += sortableTabHeader("6", "Sell");
+            // supply
+            txt += sortableTabHeader("7", "Supply");
+            // sell profit
+            txt += sortableTabHeader("8", "Sell Profit");
+            // sell percentage
+            txt += sortableTabHeader("8", "Sell Percentage");
+            // buy profit
+            txt += sortableTabHeader("9", "Buy Profit");
+            // buy percentage
+            txt += sortableTabHeader("9", "Buy Percentage");
+
+            txt += '</tr></thead>';
+            txt += '<tbody id="selected-items">';
+
+            for (x = 0; x < myArray.length; x++) {
+              sellProfit = myArray[x].sells.unit_price - convertedList[x][2];
+              sellPercentage = sellProfit / convertedList[x][2];
+              buyProfit = myArray[x].buys.unit_price - convertedList[x][2];
+              buyPercentage = buyProfit / convertedList[x][2];
+
+              txt += "<tr><td class='icon32'><img id='icon-" + myArray[x].id + "' class='icon32 rounded' src=''/></td>";
+              txt += "<td>"
+                  + myArray[x].id
+                  + "</td><td><a class='item-tools' href='#'>"
+                  + convertedList[x][1]
+                  + "</a></td>"
+                  + "<td data='" + convertedList[x][2] + "'>"
+                  + formatMoney(convertedList[x][2] + "")
+                  + "</td><td class='sorter-currency' data='" + myArray[x].buys.unit_price + "'>"
+                  + formatMoney(myArray[x].buys.unit_price + "")
+                  + "</td><td>"
+                  + myArray[x].buys.quantity
+                  + "</td><td class='sorter-currency' data='" + myArray[x].sells.unit_price
+                    + "'>"
+                  + formatMoney(myArray[x].sells.unit_price + "") + "</td><td>"
+                  + myArray[x].sells.quantity + "</td>";
+              txt += "<td class='sorter-currency' data='" + sellProfit + "'>"
+                  + formatMoney(sellProfit + "") + "</td>";
+              txt += "<td>" + presentPercent(sellPercentage) + "</td>";
+              txt += "<td class='sorter-currency' data='" + buyProfit + "'>"
+                  + formatMoney(buyProfit + "") + "</td>";
+              txt += "<td>" + presentPercent(buyPercentage) + "</td></tr>";
+            }
+            txt += "</tbody></table>";
+            tableHolder.innerHTML = txt;
+            updateItemTools(jQuery);
+            updateIcons(commaSeparatedList);
+          }
+        };
+        xmlhttp.open("GET",
+            "https://api.guildwars2.com/v2/commerce/prices?ids="
+                + commaSeparatedList, true);
+        xmlhttp.send();
+      }
+
+      function loadTableFromCsv() {
+        console.log(document.getElementById("trade input").files); // list of File objects
+
+        var file = document.getElementById("trade input").files[0];
+        var reader = new FileReader();
+        content = reader.readAsText(file);
+        console.log(content);
+        var tradeTableDiv = document.getElementById("tradeTableDiv");
+        initiateTable(tradeTableDiv);
+        loadSorter();
+      }
+
+      function loadSorter() {
+        $.tablesorter.addParser({
+          id : 'custom',
+          is : function(s, table, cell) {
+            return false;
+          },
+          format : function(s, table, cell, cellIndex) {
+            return $(cell).attr('data');
+          },
+          type : 'numeric'
+        });
+
+        $('#tradeTable').tablesorter({
+          headers : {
+            3 : {
+              sorter : 'custom'
+            },
+            6 : {
+              sorter : 'custom'
+            }
+          }
+        });
+      }
+      
+      $(function() {
+        loadSorter();
+
+      });
+    </script>
+
+  <noscript>Sorry, your browser does not support JavaScript!</noscript>
+</body>
+</html>

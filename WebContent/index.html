@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="First page" />
+<meta name="author" content="Toby Zines" />
+<title>Testing Stuff out</title>
+
+<!-- Bootstrap core CSS -->
+<link href="./css/bootstrap.min.css" rel="stylesheet" />
+<link href="./css/bootstrap-theme.min.css" rel="stylesheet" />
+<link href="./css/pnotify.custom.min.css" rel="stylesheet" />
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  rel="stylesheet"
+  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+  crossorigin="anonymous" />
+
+<!-- Custom styles for this template -->
+<link href="./css/starter-template.css" rel="stylesheet" />
+
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+          data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+            class="icon-bar"></span> <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Trading Post</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="starter-template">
+      <h1>Item Finder</h1>
+      <p title="be nice, i am new to this">Find the objects you are interested in below</p>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="well">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-5" id="allNames" style="height: 215px; overflow-y: auto;">Hi.</div>
+          <div class="col-md-3" style="height: 215px">
+            <input type="text" id="filterInputField"
+              onkeyup="filterTable('filterInputField','allNamesTable',1)"
+              placeholder="Search for names.." />
+            <div id="RefreshAllNamesButtonDiv">
+              <button id="RefreshAllNamesButton" onclick="getAllNamesData()">Refresh all
+                names</button>
+            </div>
+            <p>Identify a list of ids to gather details on</p>
+            <input type="text" id="CompareList" class="d2"
+              placeholder="Put comma separated ids here"
+              onkeydown="processSelectedListKeyDown(event)" style="width: fill"></input>
+            <button id="GetIdedData"
+              onclick="processSelectedList2(getElementById('CompareList').value)">Go!</button>
+          </div>
+          <div class="col-md-4" id="demo3">Results</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="well">
+      <div class="container-fluid" style="height: 215px; overflow: auto">
+        <div id="subselection">Sub Selection</div>
+      </div>
+    </div>
+  </div>
+  <p></p>
+
+  <div class="container">
+    <div class="well">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <h1 id="name" class="pull-left">
+              <span class="table-tools" data-id=12163>Head of Garlic <img
+                class="rounded icon32"
+                src="https://render.guildwars2.com/file/3FF6110C2B976FBCCD4F4DC6B19D33ED010431AA/63263.jpg"></img></span>
+              <!-- div class="popover right in"
+                style="top: 17.5px; left: 355.109px; display: block; line-height: 0;">
+                <div class="arrow"></div>
+                <h3 class="popover-title" style="display: none;"></h3>
+                <div class="popover-content">
+                  <button class="btn btn-default btn-xs wiki" title="wiki">
+                    <i class="fa fa-wikipedia-w"></i>
+                  </button>
+                  <button class="btn btn-default btn-xs clipboard" title="copy to clipboard"
+                    data-clipboard-text="Delicious Rice Ball ">
+                    <i class="fa fa-files-o"></i>
+                  </button>
+                  <button class="btn btn-default btn-xs watch-item" title="watch item"
+                    data-id="68634">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                </div>
+              </div-->
+            </h1>
+            <div class="pull-right" style="height: 24px">
+              <i id="spinner" class="fa fa-cog fa-spin fa-2x"></i>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <table class="table table-condensed table-bordered table-striped">
+              <tbody>
+                <tr>
+                  <td class="align-left"><strong>Sell</strong></td>
+                  <td id="sell-price" data-price="1034" class="formatgw2money align-right">1034</td>
+                </tr>
+                <tr>
+                  <td class="align-left"><strong>Buy</strong></td>
+                  <td id="buy-price" data-price="873" class="formatgw2money align-right">873</td>
+                </tr>
+                <tr>
+                  <td class="align-left"><strong>Level</strong></td>
+                  <td class="align-right">20</td>
+                </tr>
+                <tr>
+                  <td class="align-left"><strong>Rarity</strong></td>
+                  <td class="align-right">Basic</td>
+                <tr>
+                <tr>
+                  <td class="align-left"><strong>Category</strong></td>
+                  <td class="align-right">CraftingMaterial</td>
+                </tr>
+                <tr>
+                  <td class="align-left"><strong>Code</strong></td>
+                  <td class="align-right"><input type="text" readonly style="max-width: 140px"
+                    value="[&amp;AgGDLwAAAA==]"></td>
+                </tr>
+                <tr>
+                  <td class="align-left"><strong>Updated</strong></td>
+                  <td id="updated" class="align-right timestamp" data-timestamp="1486438230"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-4" style="height: 215px; overflow-y: auto;">
+            <table class="table table-striped table-condensed table-hover">
+              <thead>
+                <tr>
+                  <th><i id="buy-trend" class="fa"></i><span id="buy-trend-text">Buy</span></th>
+                  <th><i id="demand-trend" class="fa"></i><span id="demand-trend-text">Demand</span></th>
+                  <th><i class="fa fa-user"></i></th>
+                </tr>
+              </thead>
+              <tbody id="buy-orders">
+                <tr>
+                  <td><i class="copper-img"></i><span class="copper">12</span></td>
+                  <td>846</td>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <td><i class="gold-img"></i><span class="gold">8</span><i class="silver-img"></i><span
+                    class="silver">75</span><i class="copper-img"></i><span class="copper">80</span></td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                </tr>
+                <tr>
+                  <td id="bob"></td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-4" style="height: 215px; overflow: auto">
+            <table class="table table-striped table-condensed table-hover">
+              <thead>
+                <tr>
+                  <th><i id="sell-trend" class="fa"></i><span id="sell-trend-text">Sell</span></th>
+                  <th><i id="supply-trend" class="fa"></i><span id="supply-trend-text">Supply</span></th>
+                  <th><i class="fa fa-user"></i></th>
+                </tr>
+              </thead>
+              <tbody id="sell-orders"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4" style="height: 215px; overflow-y: auto;">
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th><i id="buy-trend" class="fa"></i><span id="buy-trend-text">Buy</span></th>
+          <th><i id="demand-trend" class="fa"></i><span id="demand-trend-text">Demand</span></th>
+          <th><i class="fa fa-user"></i></th>
+        </tr>
+      </thead>
+      <tbody id="buy-orders">
+        <tr>
+          <td><i class="copper-img"></i><span class="copper">12</span></td>
+          <td>846</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td><i class="gold-img"></i><span class="gold">8</span><i class="silver-img"></i><span
+            class="silver">75</span><i class="copper-img"></i><span class="copper">80</span></td>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+        </tr>
+        <tr>
+          <td id="bob"></td>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  <script src="./js/moment.js"></script>
+  <script src="./js/ZeroClipboard.min.js"></script>
+  <script src="./js/pnotify.custom.min.js"></script>
+  <script src="./js/all.js"></script>
+
+  <script type="text/javascript">
+      var SIGNED = false;
+      var LANGUAGE = 'en';
+      var ITEM_LANGUAGE = 'en';
+      moment.lang(LANGUAGE == 'zh' ? 'zh-cn' : LANGUAGE);
+
+      var xmlhttp, myArray, x, txt = "";
+      var allNamesDiv = document.getElementById("allNames");
+      allNamesDiv.style.fontSize = "15px";
+      allNamesDiv.style.backgroundColor = "white";
+      allNamesDiv.innerHTML = "Retrieving names";
+      var allNamesHash = {};
+      var allIdsHash = {};
+      getAllNamesData();
+      document.getElementById("bob").innerHTML = formatMoney("10045");
+
+      // files location https://api.guildwars2.com/v1/files.json
+      // render https://render.guildwars2.com/file/{signature}/{file_id}.{format}
+      // eg https://render.guildwars2.com/file/943538394A94A491C8632FBEF6203C2013443555/102478.png
+
+      // item details https://api.guildwars2.com/v1/item_details.json?item_id=28445
+
+      function getAllNamesData() {
+        //$('#spinner').show();
+        allNamesDiv.innerHTML = "Retrieving names";
+        var txt = "";
+
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            allNamesHash = {};
+            allIdsHash = {};
+            myArray = JSON.parse(this.responseText).items;
+            txt += '<table id="allNamesTable" class="table table-condensed table-bordered table-striped">';
+            txt += '<thead><tr role="row">';
+            txt += '<th data-column="0" role="columnheader"><span class="table-tools">Item Id</span></th>';
+            txt += '<th data-column="1">Item Name</th>';
+            txt += '</tr></thead>';
+            txt += '<tbody id="selected-items">';
+            for (x = 0; x < myArray.length; x++) {
+              allIdsHash[myArray[x][0]] = myArray[x][1];
+              allNamesHash[myArray[x][1]] = myArray[x][0];
+              txt += "<tr><td>" + myArray[x][0] + "</td><td>" + myArray[x][1]
+                  + "</td></tr>";
+            }
+            txt += "</tbody></table>"
+            allNamesDiv.innerHTML = txt;
+            //$('#spinner').hide();
+          }
+        };
+        xmlhttp.open("GET", "http://api.gw2tp.com/1/bulk/items-names.json",
+            true);
+        xmlhttp.send();
+      }
+
+      function processSelectedListKeyDown(event) {
+
+        if (event.which || event.keyCode) {
+          if ((event.which == 13) || (event.keyCode == 13)) {
+            document.getElementById('GetIdedData').click();
+          }
+        }
+      }
+
+      function sortableTabHeader(dataCol, headerText) {
+        return '<th class="align-right tablesorter-header tablesorter-headerUnSorted" data-column="' + dataCol +'" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="custom-list" unselectable="on" aria-sort="none" aria-label=": No sort applied, activate to apply an ascending sort" style="-webkit-user-select: none;">' +
+               '<div class="tablesorter-header-inner">' + headerText + '<i class="fa fa-sort"/></div></th>';
+      }
+
+      function processSelectedList2(commaSeparatedList) {
+        var idArray = commaSeparatedList.split(",");
+        var selection = document.getElementById("demo3");
+        var subselection = document.getElementById("subselection");
+        txt = "";
+        selection.innerHTML = "Selected: ";
+        for (x = 0; x < idArray.length; x++) {
+          txt += allIdsHash[idArray[x]] + ", ";
+        }
+        selection.innerHTML += txt;
+
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            myArray = JSON.parse(this.responseText);
+            var buySum = 0;
+            var demandSum = 0;
+            var sellSum = 0;
+            var supplySum = 0;
+            txt = '<table id="subselectionTable" class="table table-condensed align-right fixed-font tablesorter tablesorter-default" role="grid">';
+            txt += '<thead><tr class="tablesorter-headerRow" role="row">';
+            // image
+            txt += '<th data-sorter="false" data-column="0" class="tablesorter-header sorter-false tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" style="-webkit-user-select: none;">';
+            txt += '<div class="tablesorter-header-inner"><span class="table-tools">csv</span><div></th>';
+            // id
+            txt += sortableTabHeader("1", "Item Id");
+            // name
+            txt += sortableTabHeader("2", "Item Name");
+            // buy
+            txt += sortableTabHeader("3", "Buy");
+            // demand
+            txt += sortableTabHeader("4", "Demand");
+            // sell
+            txt += sortableTabHeader("5", "Sell");
+            // supply
+            txt += sortableTabHeader("6", "Supply");
+
+            txt += '</tr></thead>';
+            txt += '<tbody id="selected-items">';
+
+            for (x = 0; x < myArray.length; x++) {
+
+              txt += "<tr><td class='icon32'><img id='icon-" + myArray[x].id + "' class='icon32 rounded' src=''/></td>";
+              txt += "<td>"
+                  + myArray[x].id
+                  + "</td><td><a class='item-tools' href='#'>"
+                  + allIdsHash[myArray[x].id]
+                  + "</a></td><td class='sorter-currency' data='" + myArray[x].buys.unit_price + "'>"
+                  + formatMoney(myArray[x].buys.unit_price + "")
+                  + "</td><td>"
+                  + myArray[x].buys.quantity
+                  + "</td><td class='sorter-currency' data='" + myArray[x].sells.unit_price
+                  + "'>"
+                  + formatMoney(myArray[x].sells.unit_price + "") + "</td><td>"
+                  + myArray[x].sells.quantity + "</td><tr>"
+              buySum += myArray[x].buys.unit_price;
+              demandSum += myArray[x].buys.quantity;
+              sellSum += myArray[x].sells.unit_price;
+              supplySum += myArray[x].sells.quantity;
+            }
+            txt += "<tr style='background-color: #969696'><td><i class='fa fa-line-chart'></i></td><td><i class='fa fa-list'></i></td><td>Sum</td><td>"
+                + formatMoney(buySum + "")
+                + "</td><td>"
+                + demandSum
+                + "</td><td>"
+                + formatMoney(sellSum + "")
+                + "</td><td>"
+                + supplySum + "</td><tr>";
+
+            txt += "</tbody></table>"
+            subselection.innerHTML = txt;
+            selection.innerHTML += "buySum = " + formatMoney(buySum);
+            updateItemTools(jQuery);
+            updateIcons(commaSeparatedList);
+          }
+        };
+        xmlhttp.open("GET",
+            "https://api.guildwars2.com/v2/commerce/prices?ids="
+                + commaSeparatedList, true);
+        xmlhttp.send();
+      }
+
+      function filterTable(inputFieldName, tableToFilter, columnNumber) {
+        // Declare variables 
+        var input, filter, table, tr, td, i;
+        input = document.getElementById(inputFieldName);
+        filter = input.value.toUpperCase();
+        table = document.getElementById(tableToFilter);
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[columnNumber];
+          if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+    </script>
+
+
+  <noscript>Sorry, your browser does not support JavaScript!</noscript>
+
+</body>
+</html>
