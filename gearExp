@@ -1,0 +1,141 @@
+//Json File containing Gear Experience of various people
+
+
+/*	Class Experience Enum
+
+0 	Not Geared
+1	Geared, No Experience
+2	Learning
+3	Experienced
+4	Mastered
+
+*/
+
+/*	First Digit of the Enum
+
+Heavy
+
+0	"Warrior":,
+1	"Guardian":,
+2	"Revenant":,
+
+Light
+
+3	"Mesmer":,
+4	"Elementalist":,	
+5	"Necromancer":
+
+Medium
+
+6	"Ranger"
+7	"Engineer"
+8	"Thief"
+*/
+
+/*	Two Digit Enum / Class Enum
+
+00	"Berserker Power PS"
+01	"Berserker Condition PS"
+02	"Berserker Condition DPS"
+
+10	"Dragonhunter Scepter + GS (Radiance)"
+11	"Dragonhunter Scepter + GS (Virtues)"
+12	"Dragonhunter Scepter (Honor)"
+13	"Dragonhunter Hammer"
+
+20	"Herald Healer"
+21	"Herald Power"
+
+30	"ChronoTank"
+31	"ChronoDPS"
+32	"Mesmer Condition"
+
+40	"Tempest Fresh Air Dagger"
+41	"Tempest Traditional Staff"
+42	"Tempest Healer"
+
+50	"Reaper Condition"
+
+60	"Druid Healer (N)"
+61	"Druid Healer (M)"
+62	"Druid Condition"
+63	"Druid Berserker"
+64	"Ranger Condition"
+
+70	"Engineer Condition"
+71	"Engineer Power"
+
+80	"Daredevil Power Staff"
+81	"Daredevil Condition Dagger"
+*/
+
+/* Base Template for Copy-Pasta purpose
+			"00": ,
+			"01": ,
+			"02": ,
+			"10": ,
+			"11": ,
+			"12": ,
+			"13": ,
+			"20": ,
+			"21": ,
+			"30": ,
+			"31": ,
+			"32": ,
+			"40": ,
+			"41": ,
+			"42": ,
+			"50": ,
+			"60": ,
+			"61": ,
+			"62": ,
+			"63": ,
+			"64": ,
+			"70": ,
+			"71": ,
+			"80": ,
+			"81": ,
+*/
+
+
+person = {
+	"Name": {
+		"Atri": {
+			"00": 4,
+			"01": 4,
+			"02": 0,
+			"10": 4,
+			"11": 4,
+			"12": 4,
+			"13": 4,
+			"20": 3,
+			"21": 4,
+			"30": ,
+			"31":,
+			"32":,
+			"40":,
+			"41":,
+			"42":,
+			"50":,
+			"60":,
+			"61":,
+			"62":,
+			"63":,
+			"64":,
+			"70":,
+			"71":,
+			"80":,
+			"81":,
+		}
+		,
+		"Divine":{},
+		"Flynn":{},
+		"Gin":{},
+		"Jay":{},
+		"Kai":{},
+		"Rava":{},
+		"Snuffles":{},
+		"Tiger":{},
+		"Toby":{},
+	}
+}
