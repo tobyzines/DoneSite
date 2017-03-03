@@ -13,6 +13,8 @@
 <link href="./css/bootstrap.min.css" rel="stylesheet" />
 <link href="./css/bootstrap-theme.min.css" rel="stylesheet" />
 <link href="./css/pnotify.custom.min.css" rel="stylesheet" />
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
   rel="stylesheet"
@@ -108,6 +110,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="./js/jquery.tablesorter.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
   <script src="./js/moment.js"></script>
   <script src="./js/ZeroClipboard.min.js"></script>
   <script src="./js/pnotify.custom.min.js"></script>
@@ -200,37 +204,81 @@
             console.log("\t\t\t****", bossName, "****");
             roster["bosses"].push(bossName);
             var avail = ppl.slice();
-            for (var z = 0; z < orderedRequiredProfs.length; z++) {
-              //console.log("z is " + z + ", required Prof is " + orderedRequiredProfs[z]);
-              var zindex = profList.indexOf(orderedRequiredProfs[z]);
-              var perIndex = Math.floor((Math.random() * avail.length));
-              var per = avail[perIndex];
-              //console.log("per = " + per + ", zindex = " + zindex);
-              while (classExperience[per][zindex] <= 1) {
-                var perIndex = Math.floor((Math.random() * avail.length));
-                var per = avail[perIndex];
-              }
-              if (classExperience[per][zindex] == 2) {
-                avail.splice(perIndex, 1);
-              }
-              tsText += "\t" + orderedRequiredProfs[z] + "\t\t\t\t\t" + per + "\r\n";
-              console.log("\t", orderedRequiredProfs[z], "\t\t\t\t\t", per);
+            var singleRoster = generateSingleRoster(orderedRequiredProfs, classExperience, avail, profList);
+
+            for (var z = 0; z < ppl.length; z++) {
+              var per = ppl[z];
+              var profession = singleRoster[per];
+              tsText += "\t" + profession + "\t\t\t\t\t" + per + "\r\n";
+              console.log("\t", profession, "\t\t\t\t\t", per);
               if (roster[per] instanceof Array) {
-                roster[per].push(orderedRequiredProfs[z]);
+                roster[per].push(profession);
               } else {
-                roster[per] = [ orderedRequiredProfs[z] ];
+                roster[per] = [ profession ];
               }
             }
           }
         }
-        window.prompt("For TeamSpeak", tsText);
+
+        BootstrapDialog.show({
+          title : 'For TeamSpeak',
+          message : $('<textarea class="form-control" id="tsText" placeholder="TeamSpeak layout" min-height="400">' + tsText + '</textarea>'),
+          draggable: true,
+          buttons : [ {
+            label : 'Select All',
+            cssClass : 'btn-primary',
+            action : function(dialog) {
+              $("#tsText").select();
+            }
+          } ]
+        });
+        //alert(tsText);
+
+        //window.prompt("For TeamSpeak", tsText);
         return roster;
       }
 
-      // profSubset = list of professions for a boss
-      // experience = expCLass
-      // people = ppl
+      // orderedProfessions - the list of professions to use to generate a roster (ostensibly for one boss)
+      // experience = expCLass - the hash of people names, 
+      //              mapped to an array of experience 
+      //              (indexed by the location in the professionList array)
+      // peopleToUse = an array of the names of the people who will be playing. 
+      //               This should be the same length as <code>orderedProfessions</code>
+      // professionList = pl - an array of professions used to convert a name to an index 
+      // returns the map of the name of the person who will be playing in this 
+      //         roster to the professions to be played from <code>orderedProfessions</code>
+      function generateSingleRoster(orderedProfessions, experience, peopleToUse, professionList) {
+        var nameToProfessionMap = {};
+        for (var z = 0; z < orderedProfessions.length; z++) {
+          //console.log("z is " + z + ", required Prof is " + orderedProfessions[z]);
+          var zindex = professionList.indexOf(orderedProfessions[z]);
+          var perIndex = Math.floor((Math.random() * peopleToUse.length));
+          var per = peopleToUse[perIndex];
+          var protectionCounter = 0;
+          //console.log("per = " + per + ", zindex = " + zindex);
+          while (experience[per][zindex] <= 1 && protectionCounter++ < 1000) {
+            var perIndex = Math.floor((Math.random() * peopleToUse.length));
+            var per = peopleToUse[perIndex];
+          }
+          if (protectionCounter >= 1000) {
+            window.prompt("Could not find a role for " + orderedProfessions[z], "Broken!");
+            return nameMap;
+          }
+          if (experience[per][zindex] == 2) {
+            peopleToUse.splice(perIndex, 1);
+          }
+          nameToProfessionMap[per] = orderedProfessions[z];
+        }
+        return nameToProfessionMap;
+      }
+
+      // profSubset = array of professions for a boss
+      // experience = expCLass - the hash of people names, 
+      //              mapped to an array of experience 
+      //              (indexed by the location in the professionList array)
+      // people = ppl - the list of people who will be playing
       // professionList = pl
+      // returns an ordered array of profession lists (the ordered list of <code>profSubset</code>)
       function getProfListPriority(profSubset, experience, people, professionList) {
         var profCounts = [];
         var i = 0;
