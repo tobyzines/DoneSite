@@ -1,4 +1,12 @@
 
+#teamSpeakTextModal .modal-body {
+    min-height: 300px;
+}
+
+#teamSpeakTextModal .modal-body .form-control {
+    min-height: 250px;
+}
+
 *		{font-family: Tahoma, Arial; font-size: 9pt; color: #2d3229;}
 /*body		{margin: 0px; background: #ffffff url("../assets/bodybackground_white.jpg"") repeat-x bottom center; min-height: 1100px;}*/
 img		{border: 0px;}

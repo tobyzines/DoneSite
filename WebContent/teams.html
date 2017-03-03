@@ -105,6 +105,32 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="teamSpeakTextModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="teamSpeakTextModalLabel">Teamspeak Text</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="message-text" class="control-label">To Copy:</label>
+                <textarea class="form-control" id="tsText" ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick='$("#tsText").select()'>Select All</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -220,21 +246,23 @@
           }
         }
 
-        BootstrapDialog.show({
-          title : 'For TeamSpeak',
-          message : $('<textarea class="form-control" id="tsText" placeholder="TeamSpeak layout" min-height="400">' + tsText + '</textarea>'),
-          draggable: true,
-          buttons : [ {
-            label : 'Select All',
-            cssClass : 'btn-primary',
-            action : function(dialog) {
-              $("#tsText").select();
-            }
-          } ]
-        });
-        //alert(tsText);
+        $('#tsText').html(tsText);
+        $('#teamSpeakTextModal').modal('show');
+        
+//         BootstrapDialog.show({
+//           title : 'For TeamSpeak',
+//           message : $('<textarea class="form-control" id="tsText" placeholder="TeamSpeak layout" min-height="400">'
+//               + tsText + '</textarea>'),
+//           draggable : true,
+//           buttons : [ {
+//             label : 'Select All',
+//             cssClass : 'btn-primary',
+//             action : function(dialog) {
+//               $("#tsText").select();
+//             }
+//           } ]
+//         });
 
-        //window.prompt("For TeamSpeak", tsText);
         return roster;
       }
 
