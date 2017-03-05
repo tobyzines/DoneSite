@@ -120,13 +120,14 @@
             <form>
               <div class="form-group">
                 <label for="message-text" class="control-label">To Copy:</label>
-                <textarea class="form-control" id="tsText" ></textarea>
+                <textarea class="form-control" id="tsText"></textarea>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick='$("#tsText").select()'>Select All</button>
+            <button type="button" class="btn btn-primary" onclick='$("#tsText").select()'>Select
+              All</button>
           </div>
         </div>
       </div>
@@ -248,20 +249,20 @@
 
         $('#tsText').html(tsText);
         $('#teamSpeakTextModal').modal('show');
-        
-//         BootstrapDialog.show({
-//           title : 'For TeamSpeak',
-//           message : $('<textarea class="form-control" id="tsText" placeholder="TeamSpeak layout" min-height="400">'
-//               + tsText + '</textarea>'),
-//           draggable : true,
-//           buttons : [ {
-//             label : 'Select All',
-//             cssClass : 'btn-primary',
-//             action : function(dialog) {
-//               $("#tsText").select();
-//             }
-//           } ]
-//         });
+
+        //         BootstrapDialog.show({
+        //           title : 'For TeamSpeak',
+        //           message : $('<textarea class="form-control" id="tsText" placeholder="TeamSpeak layout" min-height="400">'
+        //               + tsText + '</textarea>'),
+        //           draggable : true,
+        //           buttons : [ {
+        //             label : 'Select All',
+        //             cssClass : 'btn-primary',
+        //             action : function(dialog) {
+        //               $("#tsText").select();
+        //             }
+        //           } ]
+        //         });
 
         return roster;
       }
@@ -372,8 +373,8 @@
           var rowData = tableStructure[rowNames[x]];
           txt += "<tr><td>" + rowNames[x] + "</td>";
           for (var y = 0; y < rowData.length; y++) {
-            txt += "<td " + tabClassFunction(rowData[y]) + ">" + rowData[y]
-                + "<div class='rowico p_warrior_on'></div></td>";
+            var tabData = generateTabData(rowData[y]);
+            txt += "<td " + tabClassFunction(rowData[y]) + ">" + tabData + "</td>";
           }
           txt += "</tr>";
         }
@@ -388,6 +389,16 @@
         var reader = new FileReader();
         content = reader.readAsText(file);
         console.log(content);
+      }
+
+      function generateTabData(tabData) {
+        var stringTabData = tabData + "";
+        if (stringTabData === "Warrior" || stringTabData === "Guardian" || stringTabData === "Revenant" ||
+            stringTabData === "Mesmer" || stringTabData === "Elementalist" || stringTabData === "Necromancer" ||
+            stringTabData === "Thief" || stringTabData === "Engineer" || stringTabData === "Ranger") {
+          stringTabData = "<div class='rowico p_" + stringTabData.toLowerCase() + "_on'></div>";
+        }
+        return stringTabData;
       }
 
       function loadRoster() {
