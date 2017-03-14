@@ -221,7 +221,10 @@
         roster["bosses"] = [];
         roster["players"] = ppl;
         var tsText = "";
+        // generate full roster
         for (var x = 0; x < wingData.length; x++) {
+          // generate roster for a wing
+          var lastRoster = null;
           for (var y = 0; y < wingData[x]["names"].length; y++) {
             var bossName = wingData[x]["names"][y];
             var requiredProfs = wingData[x][bossName];
@@ -230,8 +233,10 @@
             tsText += "\t\t\t****" + bossName + "****\r\n";
             console.log("\t\t\t****", bossName, "****");
             roster["bosses"].push(bossName);
-            var avail = ppl.slice();
-            var singleRoster = generateSingleRoster(orderedRequiredProfs, classExperience, avail, profList);
+            
+            var avail = getOrderedPeople(ppl, classExperience, orderedRequiredProfs, profList); // ppl.slice();
+            // generate roster for a boss
+            var singleRoster = generateSingleRoster(lastRoster, orderedRequiredProfs, classExperience, avail, profList);
 
             for (var z = 0; z < ppl.length; z++) {
               var per = ppl[z];
@@ -244,6 +249,7 @@
                 roster[per] = [ profession ];
               }
             }
+            lastRoster = singleRoster;
           }
         }
 
@@ -273,32 +279,93 @@
       //              (indexed by the location in the professionList array)
       // peopleToUse = an array of the names of the people who will be playing. 
       //               This should be the same length as <code>orderedProfessions</code>
-      // professionList = pl - an array of professions used to convert a name to an index 
+      // professionList = pl - an array of profession builds used to convert a name to an index 
       // returns the map of the name of the person who will be playing in this 
       //         roster to the professions to be played from <code>orderedProfessions</code>
-      function generateSingleRoster(orderedProfessions, experience, peopleToUse, professionList) {
+      function generateSingleRoster(lastRoster, orderedProfessions, experience, peopleToUse, professionList) {
         var nameToProfessionMap = {};
+
+        if (lastRoster != null) {
+          for (perIndex = 0; perIndex < peopleToUse.length; perIndex++) {
+            var lastRosterPerson = peopleToUse[perIndex];
+            if (typeof lastRoster[lastRosterPerson] != 'undefined') {
+              var lastProf = lastRoster[lastRosterPerson];
+              for (var z = 0; z < orderedProfessions.length; z++) {
+                if (lastProf == orderedProfessions[z]) {
+                  nameToProfessionMap[lastRosterPerson] = lastProf;
+                  peopleToUse.splice(perIndex, 1);
+                  orderedProfessions.splice(z, 1);
+                  perIndex--;
+                  console.log("Assigned " + lastRosterPerson + " to Prof " + lastProf);
+                  break;
+                }
+              }
+            }
+          }
+        }
+
         for (var z = 0; z < orderedProfessions.length; z++) {
-          //console.log("z is " + z + ", required Prof is " + orderedProfessions[z]);
-          var zindex = professionList.indexOf(orderedProfessions[z]);
+          console.log("z is " + z + ", required Prof is " + orderedProfessions[z]);
+          var professionId = professionList.indexOf(orderedProfessions[z]);
           var perIndex = Math.floor((Math.random() * peopleToUse.length));
           var per = peopleToUse[perIndex];
           var protectionCounter = 0;
-          //console.log("per = " + per + ", zindex = " + zindex);
-          while (experience[per][zindex] <= 1 && protectionCounter++ < 1000) {
+          console.log("per = " + per + ", professionId = " + professionId);
+          while (experience[per][professionId] <= 1 && protectionCounter++ < 1000) {
             var perIndex = Math.floor((Math.random() * peopleToUse.length));
             var per = peopleToUse[perIndex];
           }
           if (protectionCounter >= 1000) {
             window.prompt("Could not find a role for " + orderedProfessions[z], "Broken!");
-            return nameMap;
+            return nameToProfessionMap;
           }
-          if (experience[per][zindex] == 2) {
+          if (isPersonExperienced(per, professionId, experience)) {
             peopleToUse.splice(perIndex, 1);
           }
           nameToProfessionMap[per] = orderedProfessions[z];
         }
+
         return nameToProfessionMap;
+      }
+
+      function isPersonExperienced(personName, professionId, experienceData) {
+        return typeof experienceData[personName] == "undefined" ? false : experienceData[personName][professionId] == 2;
+      }
+
+      // people = ppl - the list of people who will be playing
+      // experience = expCLass - the hash of people names, 
+      //              mapped to an array of experience 
+      //              (indexed by the location in the professionList array)
+      // profSubset = array of professions for a boss
+      function getOrderedPeople(people, experience, profSubset, professionList) {
+        var pplCounts = [];
+        var i = 0;
+        for (i = 0; i < people.length; i++) {
+          pplCounts[i] = 0;
+        }
+
+        for (var i = 0; i < people.length; i++) {
+          var personName = people[i];
+          for (var j = 0; j < experience[personName].length; j++) {
+            pplCounts[i] += experience[personName][j];
+          }
+        }
+
+        var orderedPplList = [];
+        var orderedPplPriority = [];
+
+        for (i = 0; i < pplCounts.length; i++) {
+          var currentPriority = pplCounts[i];
+          var insertLocation = 0;
+          for (insertLocation = 0; insertLocation < orderedPplList.length; insertLocation++) {
+            if (orderedPplPriority[insertLocation] > currentPriority) {
+              break;
+            }
+          }
+          orderedPplList.splice(insertLocation, 0, people[i]);
+          orderedPplPriority.splice(insertLocation, 0, currentPriority);
+        }
+        return orderedPplList;
       }
 
       // profSubset = array of professions for a boss
@@ -393,9 +460,9 @@
 
       function generateTabData(tabData) {
         var stringTabData = tabData + "";
-        if (stringTabData === "Warrior" || stringTabData === "Guardian" || stringTabData === "Revenant" ||
-            stringTabData === "Mesmer" || stringTabData === "Elementalist" || stringTabData === "Necromancer" ||
-            stringTabData === "Thief" || stringTabData === "Engineer" || stringTabData === "Ranger") {
+        if (stringTabData === "Warrior" || stringTabData === "Guardian" || stringTabData === "Revenant"
+            || stringTabData === "Mesmer" || stringTabData === "Elementalist" || stringTabData === "Necromancer"
+            || stringTabData === "Thief" || stringTabData === "Engineer" || stringTabData === "Ranger") {
           stringTabData = "<div class='rowico p_" + stringTabData.toLowerCase() + "_on'></div>";
         }
         return stringTabData;

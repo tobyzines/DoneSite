@@ -1,0 +1,34 @@
+mysql> create database done_db;
+Query OK, 1 row affected (0.00 sec)
+
+ALSO  grant all privileges on done_db to 'done'@'localhost' identified by 'done';
+ 
+mysql> grant create, delete, select, insert, update, drop on done_db.* to 'done'@'
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> exit
+Bye
+
+C:\Users\v-tobyzines>mysql -u done -p mysql
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 38
+Server version: 5.7.17-log MySQL Community Server (GPL)
+
+mysql> use done_db;
+Database changed
+
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create tables ....
+
+mysql> show tables;
++-------------------+
+| Tables_in_done_db |
++-------------------+
+| boss_builds       |
+| experience        |
+| profession_builds |
++-------------------+
+3 rows in set (0.00 sec)
