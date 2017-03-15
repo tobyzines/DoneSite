@@ -297,5 +297,5 @@ xmlhttp.onreadystatechange = function() {
 		document.getElementById("demo").innerHTML = op;
 	}
 };
-xmlhttp.open("GET", "get_details.php?table_name=boss_builds", true);
+xmlhttp.open("GET", "store.php?table_name=boss_builds", true);
 xmlhttp.send();

@@ -7,7 +7,7 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="First page" />
 <meta name="author" content="Toby Zines" />
-<title>Held Inventory</title>
+<title>Teams</title>
 
 <!-- Bootstrap core CSS -->
 <link href="./css/bootstrap.min.css" rel="stylesheet" />
@@ -56,6 +56,9 @@
       <div>
         <input type="file" id="roles input"></input>
         <button id="loadRosterButton" onclick="loadRoster()">Load roster</button>
+      </div>
+	  <div>
+        <button id="addBuildButton" onclick="$('#addBossBuildModal').modal('show');">Add Build</button>
       </div>
     </div>
   </div>
@@ -129,6 +132,34 @@
             <button type="button" class="btn btn-primary" onclick='$("#tsText").select()'>Select
               All</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="addBossBuildModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="addBossBuildModal">Add a Boss Build</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="message-text" class="control-label">Data</label>
+                <textarea class="form-control" id="bossBuildTxt"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <!--button type="button" class="btn btn-primary" onclick='updateRow("boss_builds", $("#bossBuildTxt").value)'>Submit</button-->
+			<button type="button" class="btn btn-primary" onclick='updateRow("boss_builds", document.getElementById("bossBuildTxt").value)'>Submit</button>
+          </div>  
         </div>
       </div>
     </div>
@@ -233,7 +264,7 @@
             tsText += "\t\t\t****" + bossName + "****\r\n";
             console.log("\t\t\t****", bossName, "****");
             roster["bosses"].push(bossName);
-            
+            //var avail = ppl.slice();
             var avail = getOrderedPeople(ppl, classExperience, orderedRequiredProfs, profList); // ppl.slice();
             // generate roster for a boss
             var singleRoster = generateSingleRoster(lastRoster, orderedRequiredProfs, classExperience, avail, profList);
@@ -561,6 +592,28 @@
           return 'class = "warning"';
         } else
           return 'class = "success"';
+      }
+      
+      function updateRow(tableName, jsObject) {
+		console.log("jsObject is " + jsObject);
+        var sendableData = {'table_name' : tableName, 'object_to_update' : jsObject};
+        $.ajax({
+          url: './store.php',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(sendableData), 
+          datatype: 'json'
+		  })
+		  .done(function(data) {
+			  console.log("success");
+			  console.log(data);
+		  })
+		  .fail(function() {
+			  console.log("error");
+		  })
+		  .always(function() {
+			  console.log("complete");
+		  });
       }
     </script>
 
